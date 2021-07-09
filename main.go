@@ -10,7 +10,7 @@ import (
 type handler struct{}
 
 func (this *handler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {
-	msg := dns.Msg{}
+	msg := &dns.Msg{}
 	msg.SetReply(r)
 	switch r.Question[0].Qtype {
 	case dns.TypeA:
@@ -20,8 +20,10 @@ func (this *handler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {
 			Hdr: dns.RR_Header{Name: domain, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 60},
 			A:   net.ParseIP("127.0.0.1"),
 		})
+	default:
+		msg, _ = dns.Exchange(r, "1.1.1.1:53")
 	}
-	w.WriteMsg(&msg)
+	w.WriteMsg(msg)
 }
 
 func main() {
