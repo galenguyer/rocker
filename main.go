@@ -66,7 +66,7 @@ func (this *handler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {
 }
 
 func main() {
-	addr := "127.0.0.1:53"
+	addr := "127.0.0.53:53"
 	srv := &dns.Server{Addr: addr, Net: "udp"}
 	srv.Handler = &handler{}
 	log.Println("Starting DNS server on " + addr)

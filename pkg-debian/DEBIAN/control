@@ -1,0 +1,10 @@
+Package: rocker
+Version: {{ VERSION }}
+Architecture: amd64
+Provides: rocker
+Essential: no
+Section: web
+Priority: optional
+Maintainer: Galen Guyer <galen@galenguyer.com>
+Installed-Size: 96
+Description: DNS Resolver for Docker

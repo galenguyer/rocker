@@ -1,0 +1,23 @@
+#!/bin/sh
+# if systemctl is installed (fairly strong indicator systemd is in use), add a service unit file if it does not exist
+if command -v systemctl 2>&1 >/dev/null && [ ! -f "/usr/lib/systemd/system/rocker.service" ]; then
+# add systemd service file
+cat <<EOL | sudo tee /lib/systemd/system/rocker.service
+[Unit]
+Description=DNS Resolver for Docker
+Documentation=https://github.com/galenguyer/rocker
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/rocker
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+# enable and start rocker
+sudo systemctl daemon-reload
+sudo systemctl enable rocker.service
+sudo systemctl restart rocker.service
+fi
